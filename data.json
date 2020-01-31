@@ -1,0 +1,19 @@
+{
+    "Cristian":{
+        "id":1,
+        "files":[
+            {
+                "name":"1_1.txt",
+                "id":1,
+                "date":"30/01/2020",
+                "last_modification":"30/01/2020"
+            },
+            {
+                "name":"1_2.txt",
+                "id":2,
+                "date":"30/01/2020",
+                "last_modification":"30/01/2020"
+            }
+        ]
+    }
+}

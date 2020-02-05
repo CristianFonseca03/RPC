@@ -63,11 +63,16 @@ def menu():
             print("*"*40)
 
 def show_files(file_data):
-    #TODO hacer caso cuando no hay archivos creados
-    print("*"*40)
-    for file in file_data:
-        print(str(file[0])+') '+file[1]+'\n   Creación: '+file[2]+'\n   Última modificación: '+file[3]+'\n   Creado por: '+username)
-    print("*"*40)
+    if len(file_data) == 0:
+        print("*"*40)
+        print('El usuario no tiene archivos creados')
+        print("*"*40)
+        sys.exit(1)
+    else:
+        print("*"*40)
+        for file in file_data:
+            print(str(file[0])+') '+file[1]+'\n   Creación: '+file[2]+'\n   Última modificación: '+file[3]+'\n   Creado por: '+username)
+        print("*"*40)
 
 if __name__=="__main__":
     main()

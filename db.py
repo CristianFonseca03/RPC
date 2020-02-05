@@ -13,11 +13,10 @@ def search_username(username):
 def get_files(username):
     conn = sqlite3.connect('db.sqlite')
     c = conn.cursor()
-    c.execute("select id from user where name=:name",{"name":username})
-    id = c.fetchone()[0]
-    c.execute("select file_id from file_control where user_id=:id",{"id":1})
+    user_id = get_id(username)
+    c.execute("select file_id from file_control where user_id=:id",{"id":user_id})
     data = c.fetchall()
-    if len(data) == 0:
+    if data == None:
         return None
     else:
         user_files = []
@@ -35,5 +34,5 @@ def get_id(username):
     conn.close()
 
 if __name__=="__main__":
-    get_id("Cristian")
+    print(get_files("Cangas"))
     

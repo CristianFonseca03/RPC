@@ -1,4 +1,5 @@
 import xmlrpc.client,sys
+from datetime import datetime
     
 def main():
     global username,data,conn
@@ -6,7 +7,7 @@ def main():
     ip=input("Ingrese la ip y el puerto del servidor\n")
     print("*"*40)
     try:
-        conn = xmlrpc.client.ServerProxy("http://"+ip+"/")
+        conn = xmlrpc.client.ServerProxy('http://'+ip+'/',allow_none=True)
         conn.is_runing()
     except:
         print("Error al establecer conexión con el servidor")
@@ -36,25 +37,54 @@ def menu():
                     found=True
                     user_id=conn.get_id(username)
                     file_name=str(user_id)+'_'+str(file[0])+'.txt'
-                    try:
-                        file_reader = open('files/'+file_name,'r')
-                        print("*"*40)
-                        print(file[1])
-                        print("*"*40)
-                        print (file_reader.read())
-                        print("*"*40)
-                        file_reader.close()
-                    except FileNotFoundError:
+                    file_contents = conn.file_get_contents(file_name)
+                    if file_contents == None:
                         print("*"*40)
                         print('404 Archivo no encontrado en nuestros servidores')
+                        print("*"*40)
+                    else :
+                        print("*"*40)
+                        print("Contenido de '"+str(file[1])+"'")
+                        print("*"*40)
+                        print(file_contents)
                         print("*"*40)
             if not found:
                 print("*"*40)
                 input("No has ingresado ninguna opción correcta...\npulsa una tecla para continuar")
                 print("*"*40)
         elif option == '2':
-            pass
-            #TODO
+            show_files(data)
+            file_to_modify=input("Ingrese el archivo a modificar\n")
+            found= False
+            for file in data:
+                if file_to_modify == str(file[0]):
+                    found=True
+                    user_id=conn.get_id(username)
+                    file_name=str(user_id)+'_'+str(file[0])+'.txt'
+                    file_contents = conn.file_get_contents(file_name)
+                    if file_contents == None:
+                        print("*"*40)
+                        print('404 Archivo no encontrado en nuestros servidores')
+                        print("*"*40)
+                    else :
+                        print("*"*40)
+                        print("Contenido de '"+str(file[1])+"'")
+                        print("*"*40)
+                        print(file_contents)
+                        print("*"*40)
+                        print("Ingrese el nuevo contenido de '"+str(file[1])+"'")
+                        print("*"*40)
+                        new_file_content = input()
+                        print("*"*40)
+                        now = datetime.now()
+                        status=conn.new_file_content(file_name,new_file_content,file[0],now.strftime("%d")+'/'+now.strftime("%m")+'/'+now.strftime("%Y")+" "+now.strftime("%H:%M:%S"))
+                        if status:
+                            print('Archivo modificado exitosamente')
+                            print("*"*40)
+            if not found:
+                print("*"*40)
+                input("No has ingresado ninguna opción correcta...\npulsa una tecla para continuar")
+                print("*"*40)   
         elif option == '3':
             break
         else:

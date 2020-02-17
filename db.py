@@ -33,6 +33,12 @@ def get_id(username):
     return c.fetchone()[0]
     conn.close()
 
-if __name__=="__main__":
-    print(get_files("Cangas"))
+def change_modify_date(id,date):
+    conn = sqlite3.connect('db.sqlite')
+    c = conn.cursor()
+    c.execute("update file set modification_date=:date where id=:id",{"date":date,"id":id})
+    conn.commit()
+    conn.close()
+
+
     
